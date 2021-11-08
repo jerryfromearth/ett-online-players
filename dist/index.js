@@ -44,7 +44,7 @@ class Player {
             this.online = true;
             this.device = users[0].Device;
             this.name = users[0].UserName;
-            this.ELO = users[0].ELO;
+            this.ELO = Math.floor(users[0].ELO);
         }
         else {
             this.online = false;
