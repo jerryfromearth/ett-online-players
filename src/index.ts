@@ -175,10 +175,13 @@ function renderPlayerData(player: Player) {
     }
   );
 
-  row.cells[0].innerHTML = `<a title="ETT website" href="https://www.elevenvr.net/eleven/${player.id}" target="_blank">🖥️</a><a title="statistics" href="https://beta.11-stats.com/stats/${player.id}/statistics" target="_blank">📈</a><a style="display:none" class="matchupButton" href="#">⚔️</a><span class="matchupResult">&nbsp;</span>`;
+  row.cells[0].innerHTML = `<a title="statistics" href="https://beta.11-stats.com/stats/${player.id}/statistics" target="_blank">📈</a><a style="display:none" class="matchupButton" href="#">⚔️</a><span class="matchupResult">&nbsp;</span>`;
   row.cells[1].innerHTML = `<a href="https://www.elevenvr.net/eleven/${player.id}" target="_blank">${player.id}</a>`;
   row.cells[1].classList.add("id");
-  row.cells[2].innerHTML = player.name === undefined ? "⌛" : `${player.name}`;
+  row.cells[2].innerHTML =
+    player.name === undefined
+      ? "⌛"
+      : `<a title="ETT website" href="https://www.elevenvr.net/eleven/${player.id}" target="_blank">${player.name}</a>`;
   row.cells[3].innerHTML =
     player.ELO === undefined
       ? "⌛"
@@ -198,14 +201,11 @@ function renderPlayerData(player: Player) {
       player.opponentELO
     })<span><a title="matchup" href="https://www.elevenvr.net/matchup/${
       player.id
-    }/${
-      player.opponentid
-    }" target='_blank'>⚔️</a><a title="scoreboard" href="https://cristy94.github.io/eleven-vr-scoreboard/?user=${
-      player.id
-    }&rowsReversed=0&home-offset=0&away-offset=0" target='_blank'>🔍</a>`;
+    }/${player.opponentid}" target='_blank'>⚔️</a>`;
   }
-  row.cells[4].innerHTML =
-    player.opponent === undefined ? "" : `${opponent_str}`;
+  opponent_str += `<a title="scoreboard" class="scoreboard" href="https://cristy94.github.io/eleven-vr-scoreboard/?user=${player.id}&rowsReversed=0&home-offset=0&away-offset=0" target='_blank'>🔍</a>`;
+
+  row.cells[4].innerHTML = opponent_str;
 
   function getTimeDifferenceString(current: number, previous: number) {
     var msPerMinute = 60 * 1000;
