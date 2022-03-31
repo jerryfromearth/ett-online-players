@@ -175,7 +175,7 @@ function renderPlayerData(player: Player) {
     }
   );
 
-  row.cells[0].innerHTML = `<a title="statistics" href="https://beta.11-stats.com/stats/${player.id}/statistics" target="_blank">📈</a><a style="display:none" class="matchupButton" href="#">⚔️</a><span class="matchupResult">&nbsp;</span>`;
+  row.cells[0].innerHTML = `<a title="statistics" href="https://11-stats.com/stats/${player.id}/statistics" target="_blank">📈</a><a style="display:none" class="matchupButton" href="#">⚔️</a><span class="matchupResult">&nbsp;</span>`;
   row.cells[1].innerHTML = `<a href="https://www.elevenvr.net/eleven/${player.id}" target="_blank">${player.id}</a>`;
   row.cells[1].classList.add("id");
   row.cells[2].innerHTML =
@@ -296,7 +296,34 @@ function preLoading() {
 function postLoading() {
   updateCountdown(`Loaded.`);
 
-  updateInfo(`Total Players: ${players.length}`);
+  function groupBy(list: any, keyGetter: any) {
+    const map = new Map();
+    list.forEach((item: any) => {
+      const key = keyGetter(item);
+      const collection = map.get(key);
+      if (!collection) {
+        map.set(key, [item]);
+      } else {
+        collection.push(item);
+      }
+    });
+
+    return map;
+  }
+
+  const grouped = groupBy(players, (player: any) => player.device);
+  const sorted_keys = Array.from(grouped.keys()).sort(
+    (a, b) => grouped.get(b).length - grouped.get(a).length
+  );
+
+  let deviceStr = "";
+  for (let key of sorted_keys) {
+    deviceStr += `${key}: ${grouped.get(key).length} <br /> `;
+  }
+
+  updateInfo(
+    `<br /> Total Players: ${players.length} <br /><br /> ${deviceStr} <br />`
+  );
 
   sortPlayersTable();
 }
